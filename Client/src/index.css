@@ -1,6 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Manufacturing+Consent&family=My+Soul&family=Oswald:wght@200..700&family=Playwrite+VN+Guides&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Manufacturing+Consent&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=My+Soul&family=Oswald:wght@200..700&family=Playwrite+VN+Guides&display=swap');
+
 @import "tailwindcss";
 
 @theme {
     --font-primary: 'Oswald', sans-serif;
+    --font-secondary: 'Dancing Script', cursive;
+    --font-tertiary: 'Merriweather', serif;
 }

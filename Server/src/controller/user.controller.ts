@@ -52,6 +52,11 @@ export const Login = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
+        if (user.verified === false || user.auth === false) {
+            res.status(401).json({ message: 'User not verified' });
+            return;
+        }
+
         // JWT
 
         res.status(200).json({ message: 'Login successful' });
