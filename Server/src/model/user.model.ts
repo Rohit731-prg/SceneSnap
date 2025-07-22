@@ -7,8 +7,9 @@ interface UserStruct {
     password: string;
     role: string;
     auth: boolean;
-    opt: string;
+    otp: string;
     image: string;
+    public_key: string;
     verified: boolean;
 
     createdAt?: Date;
@@ -22,8 +23,9 @@ const userSchema = new Schema<UserStruct>({
     password: { type: String, required: true },
     role: { type: String, required: true },
     auth: { type: Boolean, default: false },
-    opt: { type: String, default: '' },
+    otp: { type: String, default: '' },
     image: { type: String, default: '' },
+    public_key: { type: String, default: '' },
     verified: { type: Boolean, default: false },
 }, {
     timestamps: true

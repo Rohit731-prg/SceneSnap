@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 
 export const createProject = async (req: Request, res: Response): Promise<void> => {
     const { title, description, owner } = req.body; 
-    if ( !title || !description || !owner )  {
+    if ( !title || !description || !owner ) {
         res.status(400).json({ message: 'All fields are required' });
         return;
     }
@@ -38,6 +38,21 @@ export const getProjectsByOwner = async (req: Request, res: Response): Promise<v
     try {
         const projects = await Project.find({ owner: id }).populate('owner');
         res.status(200).json({ projects });
+    } catch (error) {
+        res.status(500).json({ message: error });
+    }
+}
+
+export const deleteProject = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    try {
+        const project = await Project.findById(id);
+        if (!project) {
+            res.status(404).json({ message: 'Project not found' });
+            return;
+        }
+        await Project.findByIdAndDelete(id);
+        res.status(200).json({ message: 'Project deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: error });
     }

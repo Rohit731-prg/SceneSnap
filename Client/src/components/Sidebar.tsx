@@ -14,7 +14,7 @@ function Sidebar() {
         { id: 2, name: "Projects", path: "/projects" },
         { id: 3, name: "Scenes", path: "/scenes" },
         { id: 4, name: "Shots", path: "/shots" },
-        { id: 5, name: "Media", path: "/media" },
+        { id: 5, name: "props", path: "/Props" },
         { id: 6, name: "User Management", path: "/user" },
     ];
 

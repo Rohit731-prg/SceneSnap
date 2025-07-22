@@ -2,8 +2,8 @@ import { FaSearch } from "react-icons/fa";
 
 function User() {
     return (
-        <main className="font-tertiary bg-slate-800 w-full p-10 border-l border-slate-500">
-            <p className="text-4xl font-semibold text-white mb-16">Use Management Page</p>
+        <main className="font-tertiary bg-slate-800 w-full py-10 px-20 border-l border-slate-500">
+            <p className="text-4xl font-semibold text-white mb-16">User Management Page</p>
 
             <div className="flex flex-row px-5 items-center bg-slate-400 font-primary gap-5 rounded-lg">
                 <FaSearch />
@@ -12,6 +12,9 @@ function User() {
                     className="py-2 w-full border-none outline-none"
                     type="text" />
             </div>
+
+            <p className="text-xl font-semibold text-white mt-10">Manage Users</p>
+            <p className="text-lg font-primary text-slate-400">Manage all registered users, update roles, and control access in one place.</p>
 
             <section className="overflow-hidden rounded-xl border border-slate-500 mt-10 text-white shadow-lg">
                 <table className="w-full text-sm text-left">
