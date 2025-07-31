@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
+import { BiLogOut } from "react-icons/bi";
 
 interface SidebarItem {
     id: number;
@@ -19,25 +20,45 @@ function Sidebar() {
     ];
 
     return (
-        <main className="bg-slate-800 text-white min-h-screen">
-            <div className='my-10 w-full border-b-[2px] border-slate-500 py-10 px-8'>
-                <h1 className='font-secondary text-xl text-center'>SCENESNAP</h1>
+        <main className="bg-slate-800 text-white min-h-screen flex flex-col justify-between pb-10">
+            <div>
+                <div className='my-10 w-full border-b-[2px] border-slate-500 py-10 px-8'>
+                    <img src="" alt="" />
+                    <div>
+
+                    </div>
+                </div>
+
+                <section className='flex flex-col gap-2 px-5'>
+                    {navList.map((item) => {
+                        const isActive = location.pathname === item.path;
+                        return (
+                            <Link
+                                key={item.id}
+                                to={item.path}
+                                className={`w-full py-2 rounded-lg text-center transition-colors px-10 duration-200 ${isActive ? "bg-slate-500" : "hover:bg-slate-600"
+                                    }`}
+                            >
+                                {item.name}
+                            </Link>
+                        );
+                    })}
+                </section>
             </div>
 
-            <section className='flex flex-col gap-2 px-5'>
-                {navList.map((item) => {
-                    const isActive = location.pathname === item.path;
-                    return (
-                        <Link
-                            key={item.id}
-                            to={item.path}
-                            className={`w-full py-2 rounded-lg text-center transition-colors px-10 duration-200 ${isActive ? "bg-slate-500" : "hover:bg-slate-600"
-                                }`}
-                        >
-                            {item.name}
-                        </Link>
-                    );
-                })}
+            <section className='flex flex-col gap-5'>
+                <button
+                className='bg-blue-500 py-2 rounded-sm font-medium active:scale-95 transition-transform duration-200 mx-5'
+                >
+                    Create New Project
+                </button>
+                <div className='border-b-[2px] border-slate-500'></div>
+                <button
+                className='bg-red-500 py-2 rounded-sm font-medium active:scale-95 transition-transform duration-200 flex flex-row gap-2 items-center justify-center mx-5'
+                >
+                    <BiLogOut className='text-2xl' />
+                    Logout
+                </button>
             </section>
         </main>
     );
