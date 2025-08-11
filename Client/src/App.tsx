@@ -5,6 +5,7 @@ import Sidebar from './components/Sidebar';
 import User from './components/User';
 import Dashboard from './components/Dashboard';
 import Props from './components/Props';
+import Error from './components/Error';
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
               <User />
             </div>
           </div>
-        } 
+        }
       />
       <Route 
         path="/dashboard"
@@ -31,7 +32,7 @@ function App() {
               <Dashboard />
             </div>
           </div>
-        } 
+        }
       />
       <Route 
         path="/props"
@@ -42,7 +43,13 @@ function App() {
               <Props />
             </div>
           </div>
-        } 
+        }
+      />
+      <Route 
+        path="*"
+        element={
+          <Error />
+        }
       />
     </Routes>
   );
