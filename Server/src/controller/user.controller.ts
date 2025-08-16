@@ -106,3 +106,36 @@ export const getALLUser = async (req: Request, res: Response): Promise<void> => 
         res.status(500).json({ message: error });
     }
 }
+
+export const loginWithAuth = async (req: Request, res: Response): Promise<void> => {
+    const { id, email } = req.body;
+    if ( !id || !email) {
+        res.status(400).json({ message: 'All fields are required' });
+        return;
+    }
+    try {
+        const user = await User.findById(id);
+        if (!user) {
+            res.status(404).json({ message: 'User not found' });
+            return;
+        }
+        if (user.email !== email) {
+            res.status(401).json({ message: 'Invalid credentials' });
+            return;
+        }
+        if (user.auth != true) {
+            res.status(401).json({ message: 'User not verified' });
+            return;
+        }
+        const token = JWT.sign({ id: user._id, email: user.email }, process.env.JWT_CODE as string, { expiresIn: '1d' });
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: false, // ✅ for localhost (HTTP)
+            sameSite: "lax", // ✅ 'lax' works for different ports on same domain
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
+        res.status(200).json({ message: 'Login successful' });
+    } catch (error) {
+        res.status(500).json({ message: error });
+    }
+}

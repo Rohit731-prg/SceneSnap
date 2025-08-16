@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { BiLogOut } from "react-icons/bi";
+import useUserStore from '../store/userStore';
 
 interface SidebarItem {
     id: number;
@@ -9,6 +10,7 @@ interface SidebarItem {
 
 function Sidebar() {
     const location = useLocation();
+    const user = useUserStore((state) => state.user);
 
     const navList: SidebarItem[] = [
         { id: 1, name: "Dashboard", path: "/" },
@@ -23,9 +25,10 @@ function Sidebar() {
         <main className="bg-slate-800 text-white min-h-screen flex flex-col justify-between pb-10">
             <div>
                 <div className='my-10 w-full border-b-[2px] border-slate-500 py-10 px-8'>
-                    <img src="" alt="" />
+                    <img src={user?.image} alt="" />
                     <div>
-
+                        <p>{user?.name}</p>
+                        <p>Admin Panel</p>
                     </div>
                 </div>
 

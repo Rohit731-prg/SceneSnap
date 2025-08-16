@@ -26,6 +26,7 @@ interface UserState {
 
   getAllRequest: () => Promise<void>;
   login: (email: string, password: string) => Promise<boolean>;
+  checkOTP: (otp: string) => Promise<void>;
 }
 
 const useUserStore = create<UserState>((set) => ({
@@ -62,6 +63,30 @@ const useUserStore = create<UserState>((set) => ({
     } catch (error: any) {
       toast.error(error?.response?.data?.message?.message || 'Something went wrong');
       return false;
+    }
+  },
+
+  checkOTP: async (SendOtp: string) => {
+    const state = useUserStore.getState();
+    const email = state.user?.email;
+
+    try {
+      const res = axios.post('/users/otp', {
+        email,
+        SendOtp
+      });
+      toast.promise(res, {
+        loading: 'Checking OTP...',
+        success: (data) => {
+          set({ user: data.data.user });
+          return data.data.message.message;
+        },
+        error: (error) => {
+          return error?.response?.data?.message?.message || 'OTP check failed';
+        },
+      })
+    } catch (error) {
+      console.log(error);
     }
   }
 }));
