@@ -2,7 +2,7 @@ import { FaSearch } from "react-icons/fa";
 
 function User() {
     return (
-        <main className="font-tertiary bg-slate-800 w-full py-10 px-20 border-l border-slate-500">
+        <main className="font-tertiary bg-slate-800 w-full py-10 px-20 border-l border-slate-500 min-h-screen">
             <p className="text-4xl font-semibold text-white mb-16">User Management Page</p>
 
             <div className="flex flex-row px-5 items-center bg-slate-400 font-primary gap-5 rounded-lg">

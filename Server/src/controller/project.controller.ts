@@ -9,8 +9,8 @@ export const createProject = async (req: Request, res: Response): Promise<void> 
     }
     try {
         const project = await Project.findOne({ title });
-        if (!project) {
-            res.status(404).json({ message: 'Project not found' });
+        if (project) {
+            res.status(404).json({ message: 'Project already exists' });
             return;
         }
 
