@@ -13,22 +13,22 @@ function Sidebar() {
     const user = useUserStore((state) => state.user);
 
     const navList: SidebarItem[] = [
-        { id: 1, name: "Dashboard", path: "/" },
+        { id: 1, name: "Dashboard", path: "/dashboard" },
         { id: 2, name: "Projects", path: "/projects" },
         { id: 3, name: "Scenes", path: "/scenes" },
         { id: 4, name: "Shots", path: "/shots" },
         { id: 5, name: "props", path: "/Props" },
-        { id: 6, name: "User Management", path: "/user" },
+        { id: 6, name: "Actor Menegement", path: "/actor" },
     ];
 
     return (
         <main className="bg-slate-800 text-white min-h-screen flex flex-col justify-between pb-10">
             <div>
-                <div className='my-10 w-full border-b-[2px] border-slate-500 py-10 px-8'>
-                    <img src={user?.image} alt="" />
+                <div className='my-10 flex flex-row w-full border-b-[2px] border-slate-500 pb-10 px-8 gap-3'>
+                    <img src={user?.image} alt="" className='w-20 h-20 object-cover rounded-full' />
                     <div>
-                        <p>{user?.name}</p>
-                        <p>Admin Panel</p>
+                        <p className='font-semibold text-xl'>{user?.username}</p>
+                        <p className='text-slate-400 text-sm mt-1'>Admin Panel</p>
                     </div>
                 </div>
 

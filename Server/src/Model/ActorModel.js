@@ -4,6 +4,7 @@ const actorSchema = new Schema({
     name: { type: String, required: true },
     role: { type: String, required: true },
     image: { type: String, default: "" },
+    imageId: { type: String, default: "" },
     availability: { type: Array, default: [] }
 }, {
     timestamps: true

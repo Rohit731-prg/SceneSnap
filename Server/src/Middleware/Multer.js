@@ -26,6 +26,7 @@ export const uploadImage = async (req, res, next) => {
 
     const result = await streamUpload(req.file.buffer);
     req.fileUrl = result.secure_url; // store url for next middleware
+    req.fileId = result.public_id; // store public_id for next middleware
     next();
   } catch (error) {
     res

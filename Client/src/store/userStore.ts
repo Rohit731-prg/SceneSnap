@@ -4,12 +4,9 @@ import toast from 'react-hot-toast';
 
 // User type
 interface User {
-  name: string;
+  username: string;
   email: string;
-  phone: string;
   password: string;
-  role: string;
-  auth: boolean;
   otp: string;
   image: string;
   verified: boolean;
@@ -20,74 +17,98 @@ interface User {
 // Zustand state + actions
 interface UserState {
   user: User | null;
-  totalUser: number | null;
-  newRequest: any[] | null;
-  newRequestCount: number | null;
 
-  getAllRequest: () => Promise<void>;
+  registerUser: (name: string, email: string, password: string, image: File) => Promise<void>;
+  verifyUser: (otp: string) => Promise<void>;
   login: (email: string, password: string) => Promise<boolean>;
-  checkOTP: (otp: string) => Promise<void>;
+  logout: () => void;
 }
 
-const useUserStore = create<UserState>((set) => ({
-  user: null,
-  totalUser: null,
-  newRequest: null,
-  newRequestCount: null,
+// Helper functions for localStorage
+const loadUser = (): User | null => {
+  const userData = localStorage.getItem('user');
+  return userData ? JSON.parse(userData) : null;
+};
 
-  getAllRequest: async () => {
+const saveUser = (user: User) => {
+  localStorage.setItem('user', JSON.stringify(user));
+};
+
+const removeUser = () => {
+  localStorage.removeItem('user');
+};
+
+const useUserStore = create<UserState>((set, get) => ({
+  user: loadUser(),
+
+  registerUser: async (name, email, password, image) => {
     try {
-      const res = await axios.get('/users/getAllUsers');
-      set({ newRequest: res.data.users, newRequestCount: res.data.count });
+      const formData = new FormData();
+      formData.append('username', name);
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('profile', image);
+
+      const response = axios.post('/user/register', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      toast.promise(response, {
+        loading: 'Registering...',
+        success: (res) => res.data.message || 'Registered Successfully',
+        error: (err) => err.response?.data?.message || 'Registration Failed',
+      });
+
+      const { data } = await response;
+      console.log(data);
+      set({ user: data.user });
+      saveUser(data.user);  // Save to localStorage
     } catch (error: any) {
-      toast.error(error?.response?.data?.message?.message || "Failed to fetch users");
+      console.error("Registration Error:", error);
     }
   },
 
-  login: async (email: string, password: string) => {
+  verifyUser: async (otp) => {
     try {
-      const res = axios.post('/users/login', { email, password });
-
-      await toast.promise(res, {
-        loading: 'Logging in...',
-        success: (data) => {
-          set({ user: data.data.user });
-          return data.data.message.message;
-        },
-        error: (error) => {
-          return error?.response?.data?.message?.message || 'Login failed';
-        },
+      const user = get().user;
+      if (!user) {
+        toast.error("User not found");
+        return;
+      }
+      const response = axios.post('/user/verify', { email: user.email, otp });
+      toast.promise(response, {
+        loading: 'Verifying...',
+        success: (res) => res.data.message || 'Verified Successfully',
+        error: (err) => err.response?.data?.message || 'Verification Failed',
       });
+    } catch (error) {
+      console.error("Verification Error:", error);
+    }
+  },
 
+  login: async (email, password) => {
+    try {
+      console.log("Attempting login with:", email, password);
+      const response = axios.post('/user/login', { email, password });
+      toast.promise(response, {
+        loading: 'Logging in...',
+        success: (res) => res.data.message || 'Logged in Successfully',
+        error: (err) => err.response?.data?.message || 'Login Failed',
+      });
+      const { data } = await response;
+      set({ user: data.user });
+      saveUser(data.user); // Save to localStorage
       return true;
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message?.message || 'Something went wrong');
+    } catch (error) {
+      console.error("Login Error:", error);
       return false;
     }
   },
 
-  checkOTP: async (SendOtp: string) => {
-    const state = useUserStore.getState();
-    const email = state.user?.email;
-
-    try {
-      const res = axios.post('/users/otp', {
-        email,
-        SendOtp
-      });
-      toast.promise(res, {
-        loading: 'Checking OTP...',
-        success: (data) => {
-          set({ user: data.data.user });
-          return data.data.message.message;
-        },
-        error: (error) => {
-          return error?.response?.data?.message?.message || 'OTP check failed';
-        },
-      })
-    } catch (error) {
-      console.log(error);
-    }
+  logout: () => {
+    set({ user: null });
+    removeUser();
+    toast.success("Logged out successfully");
   }
 }));
 

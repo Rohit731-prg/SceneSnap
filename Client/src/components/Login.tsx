@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { FaUser, FaLock  } from "react-icons/fa";
 import LoginL from '../assets/Login.json';
 import Lottie  from 'lottie-react';
+import { Toaster } from "react-hot-toast";
 
 function Login() {
     const navigate = useNavigate();
@@ -18,11 +19,8 @@ function Login() {
     const handelSubmit = async (e: any) => {
         e.preventDefault();
 
-        const data = await useUserStore.getState().login(user.email, user.password);
-        if (!data) return;
-
-        navigate("/dashboard");
-
+        const result = await useUserStore.getState().login(user.email, user.password);
+        if(result) navigate('/dashboard');
     }
     return (
         <main className="bg-slate-800 font-primary h-screen flex flex-row items-center justify-center">
@@ -46,7 +44,7 @@ function Login() {
                         <div className="flex flex-row items-center bg-slate-500">
                             <FaLock />
                             <input
-                                onChange={(e) => setUser({ ...user, email: e.target.value })}
+                                onChange={(e) => setUser({ ...user, password: e.target.value })}
                                 className="w-full border-none outline-none px-3 py-2"
                                 type={showPass ? "text" : "password"}
                                 placeholder="Password" />
@@ -74,6 +72,7 @@ function Login() {
             <section className="w-1/3">
                 <Lottie  animationData={LoginL} loop={true} />
             </section>
+            <Toaster />
         </main>
     )
 }

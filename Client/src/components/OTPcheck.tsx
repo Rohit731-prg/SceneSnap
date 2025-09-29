@@ -1,12 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import useUserStore from '../store/userStore';
+import { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 function OTPcheck() {
-    const [otp, setOTP] = useState<string[]>(Array(6).fill(""));
+    const navigate = useNavigate();
+    const [otp, setOTP] = useState<string[]>(Array(4).fill(""));
     const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-    const method = useUserStore((state) => state.checkOTP);
+    const method = useUserStore((state) => state.verifyUser);
 
     useEffect(() => {
         if (activeIndex !== null) {
@@ -45,9 +48,9 @@ function OTPcheck() {
     const handleSubmitEmail = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         const finalOtp = otp.join("");
-        
+        console.log(finalOtp);
         await method(finalOtp);
-
+        navigate('/');
     };
 
     return (
@@ -84,6 +87,7 @@ function OTPcheck() {
                     Verify Email
                 </button>
             </form>
+            <Toaster />
         </main>
     );
 }

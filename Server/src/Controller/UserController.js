@@ -27,6 +27,7 @@ export const registerUser = async (req, res) => {
 
 export const verifyUser = async (req, res) => {
     const { email, otp } = req.body;
+    if (!email || !otp) return res.status(400).json({ message: "Please provide email and OTP" });
     try {
         const user = await User.findOne({ email });
         if (!user) return res.status(400).json({ message: "User not found" });
